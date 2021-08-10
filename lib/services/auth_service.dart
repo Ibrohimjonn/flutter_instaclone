@@ -18,16 +18,23 @@ class AuthService {
     return null;
   }
 
-  static Future<FirebaseUser> signUpUser(BuildContext context, String name, String email, String password) async {
+  static Future<Map<String, FirebaseUser>> signUpUser(BuildContext context, String name, String email, String password) async {
+    Map<String, FirebaseUser> map = new Map();
     try {
       var authResult = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      FirebaseUser user = authResult.user;
-      print(user.toString());
-      return user;
-    } catch (e) {
-      print(e);
+      FirebaseUser firebaseUser = authResult.user;
+      map.addAll({"Succes": firebaseUser});
+    } catch (error) {
+      print(error);
+      switch (error.code){
+        case "ERROR_EMAIL_ALREADY_IN_USE":
+          map.addAll({"ERROR_EMAIL_ALREADY_IN_USE": null});
+          break;
+        default:
+          map.addAll({'ERROR': null});
+      }
     }
-    return null;
+    return map;
   }
 
   static void signOutUser(BuildContext context) {

@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_instaclone/model/user_model.dart';
 import 'package:flutter_instaclone/services/auth_service.dart';
+import 'package:flutter_instaclone/services/data_service.dart';
 import 'package:flutter_instaclone/services/prefs_service.dart';
 import 'package:flutter_instaclone/services/utils_service.dart';
 
@@ -38,22 +40,31 @@ class _SignUpState extends State<SignUp> {
     setState(() {
       isLoading = true;
     });
-    AuthService.signUpUser(context, name, email, password).then((firebaseUser) => {
-      _getFirebaseUser(firebaseUser)
+    User user = new User(fullname: name, email: email, password: password,);
+    AuthService.signUpUser(context, name, email, password).then((value) => {
+      _getFirebaseUser(user,value),
     });
-
   }
 
-  _getFirebaseUser(FirebaseUser firebaseUser) async{
+  _getFirebaseUser(User user,Map<String, FirebaseUser> map) async{
     setState(() {
       isLoading = false;
     });
-    if(firebaseUser != null){
-      await Prefs.saveUserId(firebaseUser.uid);
-      Navigator.pushReplacementNamed(context, Home.id);
-    }else{
-      Utils.fireToast("Check your information");
+    FirebaseUser firebaseUser;
+    if(!map.containsKey("SUCCESS")) {
+      if(map.containsKey("ERROR_EMAIL_ALREADY_IN_USE"))
+        Utils.fireToast("Email already in use");
+      if(map.containsKey("ERROR"))
+        Utils.fireToast("Try again later");
+      return;
     }
+    firebaseUser = map["SUCCESS"];
+    if(firebaseUser = null) return;
+
+    await Prefs.saveUserId(firebaseUser.uid);
+    DataService.storeUser(user).then((value) => {
+      Navigator.pushReplacementNamed(context, Home.id),
+    });
   }
 
   _callSignIn(){
