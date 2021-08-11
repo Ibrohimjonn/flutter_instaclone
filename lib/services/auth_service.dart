@@ -23,7 +23,7 @@ class AuthService {
     try {
       var authResult = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       FirebaseUser firebaseUser = authResult.user;
-      map.addAll({"Succes": firebaseUser});
+      map.addAll({"SUCCESS": firebaseUser});
     } catch (error) {
       print(error);
       switch (error.code){

@@ -5,7 +5,6 @@ import 'package:flutter_instaclone/services/auth_service.dart';
 import 'package:flutter_instaclone/services/data_service.dart';
 import 'package:flutter_instaclone/services/prefs_service.dart';
 import 'package:flutter_instaclone/services/utils_service.dart';
-
 import 'SignIn_page.dart';
 import 'home_page.dart';
 
@@ -59,7 +58,7 @@ class _SignUpState extends State<SignUp> {
       return;
     }
     firebaseUser = map["SUCCESS"];
-    if(firebaseUser = null) return;
+    if(firebaseUser == null) return;
 
     await Prefs.saveUserId(firebaseUser.uid);
     DataService.storeUser(user).then((value) => {

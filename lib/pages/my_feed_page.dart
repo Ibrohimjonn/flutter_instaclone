@@ -18,7 +18,7 @@ class _MyFeedState extends State<MyFeed> {
   List<Post> items = new List();
 
   String post_img1 =
-      "https://cdn.pixabay.com/photo/2021/07/14/19/18/woman-6466907_960_720.jpg";
+      "https://cdn.pixabay.com/photo/2021/07/28/20/39/penguin-6503804_960_720.jpg";
   String post_img2 =
       "https://cdn.pixabay.com/photo/2021/07/28/20/39/penguin-6503804_960_720.jpg";
 
